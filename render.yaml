@@ -24,3 +24,5 @@ services:
         value: local
       - key: IS_MULTIWORKSPACE_ENABLED
         value: "false"
+      - key: PG_SSL_ALLOW_SELF_SIGNED
+        value: "true"
