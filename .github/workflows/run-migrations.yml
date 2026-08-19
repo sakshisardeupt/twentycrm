@@ -26,7 +26,6 @@ jobs:
         run: |
           missing=""
           [ -z "$PG_DATABASE_URL" ] && missing="$missing PG_DATABASE_URL"
-          [ -z "$REDIS_URL" ] && missing="$missing REDIS_URL"
           [ -z "$ENCRYPTION_KEY" ] && missing="$missing ENCRYPTION_KEY"
           if [ -n "$missing" ]; then
             echo "ERROR: Missing GitHub Actions secrets:$missing"
@@ -46,10 +45,11 @@ jobs:
           REDIS_URL: ${{ secrets.REDIS_URL }}
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
         run: |
+          REDIS="${REDIS_URL:-redis://127.0.0.1:6379}"
           docker run --rm \
             -e "PG_DATABASE_URL=${PG_DATABASE_URL}" \
             -e "PG_SSL_ALLOW_SELF_SIGNED=true" \
-            -e "REDIS_URL=${REDIS_URL}" \
+            -e "REDIS_URL=${REDIS}" \
             -e "ENCRYPTION_KEY=${ENCRYPTION_KEY}" \
             -e "SERVER_URL=http://localhost:3000" \
             -e "DISABLE_CRON_JOBS_REGISTRATION=true" \
