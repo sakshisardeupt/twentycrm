@@ -34,8 +34,9 @@ jobs:
             echo "Add them at:"
             echo "  https://github.com/sakshisardeupt/twentycrm/settings/secrets/actions"
             echo ""
-            echo "PG_DATABASE_URL example (session pooler, no sslmode query param):"
-            echo "  postgresql://postgres.zqaiuqnynmchvmmfqunx:PASSWORD@aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres"
+# Use DIRECT connection for migrations (GitHub runners support IPv6).
+# Render app should still use SESSION POOLER URL in its own env vars.
+          echo "PG_DATABASE_URL should use db.[ref].supabase.co (direct), not pooler."
             exit 1
           fi
           echo "All required secrets are set."
