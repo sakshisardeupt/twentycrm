@@ -1,12 +1,5 @@
-# One-time: run Twenty DB migrations using GitHub's runner (7GB RAM).
-#
-# Setup (required before running):
-#   Repo → Settings → Secrets and variables → Actions → New repository secret
-#   - PG_DATABASE_URL  (Supabase session pooler, NO ?sslmode= on the end)
-#   - REDIS_URL          (full Upstash URL)
-#   - ENCRYPTION_KEY
-#
-# Then: Actions → Run Twenty DB migrations → Run workflow
+# Migrations must use DIRECT Supabase URL (db.[ref].supabase.co) — pooler cannot run DDL.
+# Render/Northflank app runtime should use SESSION POOLER URL instead.
 
 name: Run Twenty DB migrations
 
@@ -30,13 +23,8 @@ jobs:
           [ -z "$ENCRYPTION_KEY" ] && missing="$missing ENCRYPTION_KEY"
           if [ -n "$missing" ]; then
             echo "ERROR: Missing GitHub Actions secrets:$missing"
-            echo ""
-            echo "Add them at:"
-            echo "  https://github.com/sakshisardeupt/twentycrm/settings/secrets/actions"
-            echo ""
-# Use DIRECT connection for migrations (GitHub runners support IPv6).
-# Render app should still use SESSION POOLER URL in its own env vars.
-          echo "PG_DATABASE_URL should use db.[ref].supabase.co (direct), not pooler."
+            echo "Add them at: https://github.com/sakshisardeupt/twentycrm/settings/secrets/actions"
+            echo "PG_DATABASE_URL must use db.[ref].supabase.co (direct), not pooler."
             exit 1
           fi
           echo "All required secrets are set."
