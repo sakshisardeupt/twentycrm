@@ -1,4 +1,4 @@
-# $0 demo — Render Free web service (750 hrs/mo, sleeps after 15 min idle)
+# $0 demo — Render Free web service (512MB RAM — migrations run locally first)
 # Database: Supabase Free | Redis: Upstash Free
 
 services:
@@ -26,3 +26,9 @@ services:
         value: "false"
       - key: PG_SSL_ALLOW_SELF_SIGNED
         value: "true"
+      - key: DISABLE_DB_MIGRATIONS
+        value: "true"
+      - key: DISABLE_CRON_JOBS_REGISTRATION
+        value: "true"
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=384"
