@@ -1,0 +1,26 @@
+# $0 demo — Render Free web service (750 hrs/mo, sleeps after 15 min idle)
+# Database: Supabase Free | Redis: Upstash Free
+
+services:
+  - type: web
+    name: twenty-demo
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_PORT
+        value: "3000"
+      - key: PG_DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: SERVER_URL
+        sync: false
+      - key: ENCRYPTION_KEY
+        sync: false
+      - key: STORAGE_TYPE
+        value: local
+      - key: IS_MULTIWORKSPACE_ENABLED
+        value: "false"
